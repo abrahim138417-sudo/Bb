@@ -6,7 +6,6 @@ local LP = Players.LocalPlayer
 local Cam = workspace.CurrentCamera
 
 local ScriptEnabled = false
-local Hold = false
 
 -- Create GUI
 local ScreenGui = Instance.new("ScreenGui")
@@ -34,7 +33,7 @@ Title.Parent = MainFrame
 Title.BackgroundTransparency = 1
 Title.Size = UDim2.new(1, 0, 0, 40)
 Title.Font = Enum.Font.SourceSansBold
-Title.Text = "Enable Aim Assist?"
+Title.Text = "Enable Auto Aim?"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 18
 
@@ -69,21 +68,10 @@ DisableBtn.MouseButton1Click:Connect(function()
     MainFrame.Visible = false
 end)
 
--- Aim Logic (L2 & MouseButton2)
-local function isAim(i) 
-    return i.UserInputType == Enum.UserInputType.MouseButton2 or i.KeyCode == Enum.KeyCode.ButtonL2 
-end
-
-UserInputService.InputBegan:Connect(function(i, g) 
-    if not g and isAim(i) then Hold = true end 
-end)
-
-UserInputService.InputEnded:Connect(function(i) 
-    if isAim(i) then Hold = false end 
-end)
-
+-- Auto Lock Logic (Automatic without holding L2)
 RunService.RenderStepped:Connect(function()
-    if not ScriptEnabled or not Hold then return end
+    if not ScriptEnabled then return end
+    
     local Target, MinD = nil, 300
     for _, v in pairs(Players:GetPlayers()) do
         if v ~= LP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 then
@@ -94,6 +82,7 @@ RunService.RenderStepped:Connect(function()
             end
         end
     end
+    
     if Target then 
         Cam.CFrame = CFrame.new(Cam.CFrame.Position, Target.Position) 
     end
