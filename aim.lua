@@ -1,38 +1,17 @@
-local ScreenGui = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
-local Title = Instance.new("TextLabel")
-local ToggleButton = Instance.new("TextButton")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
-ScreenGui.Parent = game.CoreGui
-MainFrame.Name = "MainFrame"
-MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-MainFrame.Position = UDim2.new(0.05, 0, 0.4, 0)
-MainFrame.Size = UDim2.new(0, 200, 0, 120)
-MainFrame.Active = true
-MainFrame.Draggable = true
+local function loadScript()
+    task.wait(1)
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/mshyasamh74-code/Aim.-lua/refs/heads/main/Aim.%20lua"))()
+    end)
+end
 
-Title.Parent = MainFrame
-Title.Size = UDim2.new(1, 0, 0, 30)
-Title.Text = "Control Menu"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+if LocalPlayer.Character then
+    loadScript()
+end
 
-ToggleButton.Parent = MainFrame
-ToggleButton.Position = UDim2.new(0.1, 0, 0.4, 0)
-ToggleButton.Size = UDim2.new(0.8, 0, 0.4, 0)
-ToggleButton.Text = "Status: OFF"
-ToggleButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
-ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-local Enabled = false
-ToggleButton.MouseButton1Click:Connect(function()
-    Enabled = not Enabled
-    if Enabled then
-        ToggleButton.Text = "Status: ON"
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 180, 50)
-    else
-        ToggleButton.Text = "Status: OFF"
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
-    end
+LocalPlayer.CharacterAdded:Connect(function()
+    loadScript()
 end)
